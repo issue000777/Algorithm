@@ -53,10 +53,12 @@ public class Main {
 				return (long) i;
 			}
 		}
+		
 		Long x = (long) Math.pow(n, 1 / 3.0);
 		if (_isBeautiful(x)) {
 			return x;
 		}
+		
 		x = (long) Math.pow(n, 0.5);
 		if (_isBeautiful(x)) {
 			return x;
