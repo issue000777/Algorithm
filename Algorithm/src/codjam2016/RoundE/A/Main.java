@@ -3,7 +3,6 @@ package codjam2016.RoundE.A;
 import java.io.File;
 import java.io.FileWriter;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.Scanner;
 
 public class Main {

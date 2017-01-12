@@ -2,7 +2,6 @@ package acm;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Main {
@@ -17,15 +16,14 @@ public class Main {
         int caseNum = in.nextInt();
         
         for (int i = 1; i <= caseNum; i++) {
-            int n = in.nextInt();
-            int m = in.nextInt();
+            Long n = in.nextLong();
             
             
-            int result = _getResult(n, m);
+            Long result = _getResult(n);
             System.out.println(result);
             
             fw.write("Case #" + i + ": ");
-            fw.write(result);
+            fw.write(result.toString());
             fw.write("\n");
         }
         fw.close();
@@ -34,7 +32,8 @@ public class Main {
     }
 
 
-    private static int _getResult(int n, int m){
-        return 0;
+    private static Long _getResult(Long n){
+    	
+        return (long) 0;
     }
 }

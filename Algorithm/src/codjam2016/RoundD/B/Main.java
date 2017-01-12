@@ -2,7 +2,6 @@ package codjam2016.RoundD.B;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Main {
