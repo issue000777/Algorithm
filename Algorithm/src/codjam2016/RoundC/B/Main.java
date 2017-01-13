@@ -10,7 +10,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-		boolean isSmall = true;
+		boolean isSmall = false;
 
 		String str = isSmall == true ? "small" : "large";
 		String path = "/" + Main.class.getPackage().toString().substring(8).replace('.', '/');
@@ -19,7 +19,7 @@ public class Main {
 		FileWriter fw = new FileWriter(new File(path + ".out"));
 
 		int caseNum = in.nextInt();
-		// caseNum = 2;
+		//caseNum = 1;
 
 		for (int casei = 1; casei <= caseNum; casei++) {
 			int r, c, k;
@@ -28,16 +28,21 @@ public class Main {
 			c = in.nextInt();
 			k = in.nextInt();
 
-			int[][] map = new int[r][c];
+			int[][] map = new int[r + 1][c + 1];
+			int[][] count = new int[r + 1][c + 1];
 
 			for (int i = 0; i < k; i++) {
 				int m = in.nextInt();
 				int n = in.nextInt();
-				map[m][n] = 1;
+				map[m + 1][n + 1] = 1;
 			}
 
-			int result = _getResult(map);
+			long result = _getResult(map, count);
+			
+			
+			
 			System.out.println(result);
+
 			fw.write("Case #" + casei + ": ");
 			fw.write(result + "");
 			fw.write("\n");
@@ -47,40 +52,30 @@ public class Main {
 
 	}
 
-	private static int _getResult(int[][] map) {
+	private static long _getResult(int[][] map, int[][] count) {
 
-		int result = 0;
-
-		int i = 0;
-		int j = 0;
-		while (i < map.length) {
-			while (j < map[0].length) {
-				for (int d = 1; d <= map.length; d++) {
-					if (_isAvailable(map, d, i, j))
-						result++;
-					else
-						break;
-					System.out.println(result);
+		for (int i = 1; i < map.length; i++) {
+			for (int j = 1; j < map[0].length; j++) {
+				if (map[i][j] == 1) {
+					count[i][j] = 0;
+				} else {
+					count[i][j] = Math.min(Math.min(count[i - 1][j], count[i][j - 1]), count[i - 1][j - 1]) + 1;
 				}
-				j++;
+
 			}
-			i++;
+		}
+
+		long result = 0;
+		for (int i = 1; i < count.length; i++) {
+			for (int j = 1; j < count[0].length; j++) {
+				//System.out.print(count[i][j] + " ");
+				result += count[i][j];
+			}
+			//System.out.println();
 		}
 
 		return result;
 	}
 
-	private static boolean _isAvailable(int[][] map, int d, int m, int n) {
-
-		for (int i = m; i < m + d; i++) {
-			for (int j = n; j < n + d; j++) {
-				if (i >= map.length || j >= map[0].length || map[i][j] == 1)
-					return false;
-
-			}
-		}
-
-		return true;
-	}
 
 }
