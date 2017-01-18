@@ -6,8 +6,6 @@ import java.util.Scanner;
 
 public class Main {
 
-	static int dir[][] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
-
 	public static void main(String[] args) throws Exception {
 
 		boolean isSmall = false;
