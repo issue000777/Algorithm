@@ -3,13 +3,10 @@ package codjam2016.RoundC.C;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
@@ -148,6 +145,12 @@ public class Main {
 				path[strMap.get(func.left)][strMap.get(right)] = 1;
 			}
 		}
+		
+		if(n != strMap.size()){
+			for(Entry<String, Integer> i : strMap.entrySet())
+				System.out.println(i.getKey());
+		}
+		
 
 		Boolean isCycle = false;
 		int[] skip = new int[1001];
@@ -174,14 +177,14 @@ public class Main {
 	private static boolean _isCycle(int[][] path, int[] skip, int[] use, List<Integer> pathList, int curPos) {
 
 		if (pathList.size() >= path.length) {
-			System.out.println("rtn1");
-			System.out.println(pathList);
+//			System.out.println("rtn1");
+//			System.out.println(pathList);
 			return true;
 		}
 
 		if (pathList.size() != 1 && pathList.get(0) == curPos) {
-			System.out.println("rtn2");
-			System.out.println(pathList);
+//			System.out.println("rtn2");
+//			System.out.println(pathList);
 			return true;
 		}
 
