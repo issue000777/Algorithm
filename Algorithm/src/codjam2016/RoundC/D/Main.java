@@ -31,9 +31,9 @@ public class Main {
 				 soldierList.add(new Soldier(attack, defense));
 			 }
 			
-			 String result = "";
+			 String result = _getResult(soldierList);
 			
-			 System.out.println(_getResult(soldierList));
+			 System.out.println(result);
 			
 			 fw.write("Case #" + casei + ": ");
 			 fw.write(result + "");
@@ -49,10 +49,30 @@ public class Main {
 	
 	private static String _getResult(List<Soldier> soldierList){
 		
+		
+		for(Soldier s : soldierList){
+			s.left = _getLeft(s.attack, s.defense, soldierList);
+		}
+		
+		for(Soldier s : soldierList){
+			if(s.left % 2 == 1)
+				return "NO";
+		}
+		
 		return "YES";
 	}
 	
-	
+	private static int _getLeft(int attack, int defense, List<Soldier> soldierList){
+		
+		int rtn = 0;
+		
+		for(Soldier s : soldierList){
+			if(s.attack > attack || s.defense > defense)
+				rtn++;
+		}
+		
+		return rtn;
+	}
 
 
 }
@@ -60,6 +80,7 @@ public class Main {
 class Soldier {
 	int attack;
 	int defense;
+	int left;
 	
 	Soldier(int attack, int defense){
 		this.attack = attack;
