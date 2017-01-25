@@ -49,18 +49,50 @@ public class Main {
 	
 	private static String _getResult(List<Soldier> soldierList){
 		
+		if(_pick(soldierList, 0, 0))
+			return "YES";
+		else
+			return "NO";
+	
 		
-		for(Soldier s : soldierList){
-			s.left = _getLeft(s.attack, s.defense, soldierList);
-		}
-		
-		for(Soldier s : soldierList){
-			if(s.left % 2 == 1)
-				return "NO";
-		}
-		
-		return "YES";
 	}
+	
+	private static boolean _pick(List<Soldier> soldierList, int attack, int defense){
+		
+		List<Soldier> candidate = new ArrayList<Soldier>();
+		for(Soldier s : soldierList){
+			if(s.attack > attack || s.defense > defense){
+				candidate.add(s);
+			}
+		}
+		
+		if(candidate.isEmpty())
+			return false;
+		
+		for(Soldier s : candidate){
+			int tmp = _getLeft(s.attack, s.defense, soldierList);
+			if(tmp == 0){
+				return true;
+			}
+			
+			else if (tmp == 1){
+				return false;
+			}
+			
+		}
+		
+		for(Soldier s : candidate){
+			if(_pick(soldierList, Math.max(s.attack, attack), Math.max(s.defense, defense)) == false){
+				return true;
+			}
+			
+		}
+		
+		return false;
+		
+	}
+
+	
 	
 	private static int _getLeft(int attack, int defense, List<Soldier> soldierList){
 		
