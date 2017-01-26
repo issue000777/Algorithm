@@ -3,7 +3,9 @@ package codjam2016.RoundC.D;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -19,21 +21,26 @@ public class Main {
 		FileWriter fw = new FileWriter(new File(path + ".out"));
 
 		int caseNum = in.nextInt();
-		//caseNum = 2;
+		caseNum = 1;
 
 		for (int casei = 1; casei <= caseNum; casei++) {
 			 int n = in.nextInt();
 			
 			 List<Soldier> soldierList = new ArrayList<Soldier>();
+			 //int[][] cache = new int[10001][10001];
+			 Map<String, Integer> cache = new HashMap<String, Integer>(); 
+			 
 			 for (int i = 0; i < n; i++) {
 				 int attack = in.nextInt();
 				 int defense = in.nextInt();
 				 soldierList.add(new Soldier(attack, defense));
 			 }
-			
-			 String result = _getResult(soldierList);
+			 String result = _getResult(soldierList, cache);
+			 
 			
 			 System.out.println(result);
+			 
+			 System.out.println(cache.values());
 			
 			 fw.write("Case #" + casei + ": ");
 			 fw.write(result + "");
@@ -47,9 +54,11 @@ public class Main {
 
 	}
 	
-	private static String _getResult(List<Soldier> soldierList){
+	private static String _getResult(List<Soldier> soldierList, Map<String, Integer> cache){
+
+
 		
-		if(_pick(soldierList, 0, 0))
+		if(_pick(soldierList, 0, 0, cache))
 			return "YES";
 		else
 			return "NO";
@@ -57,7 +66,13 @@ public class Main {
 		
 	}
 	
-	private static boolean _pick(List<Soldier> soldierList, int attack, int defense){
+	private static boolean _pick(List<Soldier> soldierList, int attack, int defense, Map<String, Integer> cache){
+		
+		Integer tmp = cache.get(attack+":"+defense);
+		if(tmp != null && tmp == 1)
+			return true;
+		else if (tmp != null && tmp == 2)
+			return false;
 		
 		List<Soldier> candidate = new ArrayList<Soldier>();
 		for(Soldier s : soldierList){
@@ -66,45 +81,26 @@ public class Main {
 			}
 		}
 		
-		if(candidate.isEmpty())
+		if(candidate.isEmpty()){
+			cache.put(attack+":"+defense, 2);
 			return false;
-		
-		for(Soldier s : candidate){
-			int tmp = _getLeft(s.attack, s.defense, soldierList);
-			if(tmp == 0){
-				return true;
-			}
-			
-			else if (tmp == 1){
-				return false;
-			}
-			
 		}
+
 		
 		for(Soldier s : candidate){
-			if(_pick(soldierList, Math.max(s.attack, attack), Math.max(s.defense, defense)) == false){
+
+			
+			if(_pick(soldierList, Math.max(s.attack, attack), Math.max(s.defense, defense), cache) == false){
+				cache.put(attack+":"+defense, 1);
 				return true;
 			}
 			
 		}
-		
+		cache.put(attack+":"+defense, 2);
 		return false;
 		
 	}
 
-	
-	
-	private static int _getLeft(int attack, int defense, List<Soldier> soldierList){
-		
-		int rtn = 0;
-		
-		for(Soldier s : soldierList){
-			if(s.attack > attack || s.defense > defense)
-				rtn++;
-		}
-		
-		return rtn;
-	}
 
 
 }
@@ -112,7 +108,6 @@ public class Main {
 class Soldier {
 	int attack;
 	int defense;
-	int left;
 	
 	Soldier(int attack, int defense){
 		this.attack = attack;
