@@ -12,7 +12,8 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-		boolean isSmall = true;
+		
+		boolean isSmall = false;
 
 		String str = isSmall == true ? "small" : "large";
 		String path = "/" + Main.class.getPackage().toString().substring(8).replace('.', '/');
@@ -21,13 +22,12 @@ public class Main {
 		FileWriter fw = new FileWriter(new File(path + ".out"));
 
 		int caseNum = in.nextInt();
-		caseNum = 1;
+		//caseNum = 1;
 
 		for (int casei = 1; casei <= caseNum; casei++) {
 			 int n = in.nextInt();
 			
 			 List<Soldier> soldierList = new ArrayList<Soldier>();
-			 //int[][] cache = new int[10001][10001];
 			 Map<String, Integer> cache = new HashMap<String, Integer>(); 
 			 
 			 for (int i = 0; i < n; i++) {
@@ -40,7 +40,6 @@ public class Main {
 			
 			 System.out.println(result);
 			 
-			 System.out.println(cache.values());
 			
 			 fw.write("Case #" + casei + ": ");
 			 fw.write(result + "");
