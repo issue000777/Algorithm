@@ -13,7 +13,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		
 
-		boolean isSmall = false;
+		boolean isSmall = true;
 
 		String str = isSmall == true ? "small" : "large";
 		String path = "/" + Main.class.getPackage().toString().substring(8).replace('.', '/');
@@ -26,10 +26,10 @@ public class Main {
 
 		for (int i = 1; i <= caseNum; i++) {
 
-			int R = in.nextInt();
-			int C = in.nextInt();
+			BigDecimal R = in.nextBigDecimal();
+			BigDecimal C = in.nextBigDecimal();
 
-			BigDecimal result = _getResult(R, C);
+			BigDecimal result = _getResultLarge(R, C);
 			System.out.println(result);
 			fw.write("Case #" + i + ": ");
 			fw.write(result + "");
@@ -40,27 +40,45 @@ public class Main {
 
 	}
 
-	private static BigDecimal _getResult(int R, int C) {
+	private static BigDecimal _getResult(BigDecimal R, BigDecimal C) {
 
 		BigDecimal result = BigDecimal.ZERO;
+		
 
 		int i = 1;
-		while (R - i > 0 && C - i > 0) {
-			result = result.add(new BigDecimal((R - i) * (C - i)));
+		while (R.intValue() - i > 0 && C.intValue() - i > 0) {
+			result = result.add(new BigDecimal((R.intValue() - i) * (C.intValue() - i)));
 			i++;
 
 		}
 
-		for (int m = 1; m < Math.min(R, C); m++) {
-			for (int n = 1; n < Math.min(R, C); n++) {
+		for (int m = 1; m < Math.min(R.intValue(), C.intValue()); m++) {
+			for (int n = 1; n < Math.min(R.intValue(), C.intValue()); n++) {
 
-				if (m + n < Math.min(R, C)) {
-					result = result.add(new BigDecimal((R - m - n) * (C - m - n)));
+				if (m + n < Math.min(R.intValue(), C.intValue())) {
+					result = result.add(new BigDecimal((R.intValue() - m - n) * (C.intValue() - m - n)));
 				}
 
 			}
 		}
+		
+		
+		return result.remainder(new BigDecimal("1000000007"));
+	}
+	
+	private static BigDecimal _getResultLarge(BigDecimal R, BigDecimal C) {
 
+		BigDecimal result = BigDecimal.ZERO;
+		
+		BigDecimal n = R.subtract(BigDecimal.ONE).compareTo(C.subtract(BigDecimal.ONE)) < 0 ? R.subtract(BigDecimal.ONE) : C.subtract(BigDecimal.ONE); 
+		
+		BigDecimal nPlusOne = n.add(BigDecimal.ONE);
+		BigDecimal twoNPlusOne = n.multiply(new BigDecimal(2)).add(BigDecimal.ONE);
+		BigDecimal result1 = n.multiply(n).multiply(nPlusOne).multiply(nPlusOne).divide(new BigDecimal(4));
+		BigDecimal result2 = R.add(C).multiply(n).multiply(nPlusOne).multiply(twoNPlusOne).divide(new BigDecimal(6));
+		BigDecimal result3 = R.multiply(C).multiply(n).multiply(nPlusOne).divide(new BigDecimal(2));
+		result = result1.subtract(result2).add(result3);
+		
 		return result.remainder(new BigDecimal("1000000007"));
 	}
 	
